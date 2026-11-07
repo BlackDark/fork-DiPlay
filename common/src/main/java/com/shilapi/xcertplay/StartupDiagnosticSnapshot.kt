@@ -2,14 +2,15 @@ package com.shilapi.xcertplay
 
 import android.content.Context
 
-/** Only the latest received boot event and launch result; no Intent extras or device identifiers. */
+/** Only the latest startup event and launch result; no Intent extras or device identifiers. */
 internal object StartupDiagnosticSnapshot {
     private const val PREFS = "diplay_startup_diagnostics"
 
-    fun received(context: Context, launchEnabled: Boolean) {
+    fun received(context: Context, trigger: String, launchEnabled: Boolean) {
         runCatching {
             context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
                 .putLong("receivedAt", System.currentTimeMillis())
+                .putString("trigger", trigger)
                 .putBoolean("launchEnabled", launchEnabled)
                 .putString("launchResult", if (launchEnabled) "pending" else "disabled")
                 .remove("failureClass").apply()
@@ -29,13 +30,14 @@ internal object StartupDiagnosticSnapshot {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val receivedAt = prefs.getLong("receivedAt", 0)
         if (receivedAt == 0L) {
-            "Boot diagnostics received=false; no boot delivery has been recorded by this version."
+            "Startup diagnostics received=false; no startup event has been recorded by this version."
         } else {
-            "Boot diagnostics received=true receivedAtEpochMs=$receivedAt " +
-                "launchEnabledAtBoot=${prefs.getBoolean("launchEnabled", false)} " +
+            "Startup diagnostics received=true trigger=${prefs.getString("trigger", "unknown")} " +
+                "receivedAtEpochMs=$receivedAt " +
+                "launchEnabled=${prefs.getBoolean("launchEnabled", false)} " +
                 "launchResult=${prefs.getString("launchResult", "unknown")} " +
                 "failureClass=${prefs.getString("failureClass", "none") ?: "none"}; " +
                 "startActivity-returned does not prove the OEM displayed the app."
         }
-    }.getOrDefault("Boot diagnostics unavailable.")
+    }.getOrDefault("Startup diagnostics unavailable.")
 }
