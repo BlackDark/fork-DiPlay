@@ -1042,4 +1042,11 @@
     <string name="wifi_direct_channel_unavailable">Wi-Fi Direct tercih edilen kanalı kullanamıyor</string>
     <string name="settings_existing_wifi_interface">Ağ arayüzü (isteğe bağlı)</string>
     <string name="settings_existing_wifi_interface_description">Yalnızca yerel ağ (LAN) bağlantısı Android\'in Wi-Fi olarak bildirmediği bir arayüzde (örneğin eth1 üzerindeki bir USB ağ kartı) çalışan üniteler içindir. Otomatik seçilmesi için boş bırakın.</string>
+    <string name="settings_broadcast_title">Yayın eylemleri (deneysel)</string>
+    <string name="settings_broadcast_description">DiPlay çalışırken etkin bir eylem alındığında DiPlay açılır. Diğer uygulamalar yayınları taklit edebilir; yalnızca güvenilir eylemleri yapılandırın.</string>
+    <string name="settings_broadcast_enable">Yayın eylemlerini etkinleştir</string>
+    <string name="settings_broadcast_add">Eylem ekle</string>
+    <string name="settings_broadcast_remove">%1$s öğesini kaldır</string>
+    <string name="settings_broadcast_invalid">Harf, rakam veya alt çizgiyle noktalarla ayrılmış bir eylem girin.</string>
+    <string name="settings_broadcast_duplicate">Bu eylem zaten eklenmiş.</string>
 </resources>

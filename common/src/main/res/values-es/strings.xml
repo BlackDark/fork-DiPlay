@@ -954,4 +954,11 @@
     <string name="cluster_projection_shape_description">La pantalla partida mantiene junto al mapa la velocidad y el estado que el panel muestra normalmente; la pantalla completa deja que el mapa ocupe todo el panel. DiPlay fija la forma cada vez que aparece el mapa de CarPlay, que de lo contrario anula la forma elegida en el coche. Requiere ADB por red en la unidad principal.</string>
     <string name="settings_cluster_speedometer_album_color">Usar el color del álbum en el fondo del velocímetro</string>
     <string name="settings_cluster_speedometer_album_color_description">Iguala el color del borde del álbum con transiciones suaves. Conserva la opacidad elegida.</string>
+    <string name="settings_broadcast_title">Acciones de difusión (experimental)</string>
+    <string name="settings_broadcast_description">Abre DiPlay al recibir una acción activada mientras DiPlay está en ejecución. Otras aplicaciones pueden suplantar difusiones; configura solo acciones fiables.</string>
+    <string name="settings_broadcast_enable">Activar acciones de difusión</string>
+    <string name="settings_broadcast_add">Añadir acción</string>
+    <string name="settings_broadcast_remove">Eliminar %1$s</string>
+    <string name="settings_broadcast_invalid">Introduce una acción con puntos, letras, números o guiones bajos.</string>
+    <string name="settings_broadcast_duplicate">Esta acción ya está añadida.</string>
 </resources>

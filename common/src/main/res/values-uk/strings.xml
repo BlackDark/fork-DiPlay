@@ -966,4 +966,11 @@
     <string name="cluster_projection_shape_description">На пів екрана швидкість і стан, які панель зазвичай показує, залишаються поруч із картою; на весь екран карта займає всю панель. DiPlay задає цей вигляд щоразу, коли з&#8217;являється карта CarPlay, інакше він перекриває вигляд, вибраний в автомобілі. Потрібен ADB через мережу на головному пристрої.</string>
     <string name="settings_cluster_speedometer_album_color">Колір альбому для тла спідометра</string>
     <string name="settings_cluster_speedometer_album_color_description">Плавно змінює тло на колір рамки альбому. Зберігає вибрану непрозорість.</string>
+    <string name="settings_broadcast_title">Широкомовні дії (експериментально)</string>
+    <string name="settings_broadcast_description">Відкриває DiPlay після отримання ввімкненої дії, поки програма працює. Інші програми можуть підробляти повідомлення; додавайте лише довірені дії.</string>
+    <string name="settings_broadcast_enable">Увімкнути дії</string>
+    <string name="settings_broadcast_add">Додати дію</string>
+    <string name="settings_broadcast_remove">Видалити %1$s</string>
+    <string name="settings_broadcast_invalid">Введіть дію через крапки, використовуючи літери, цифри або підкреслення.</string>
+    <string name="settings_broadcast_duplicate">Цю дію вже додано.</string>
 </resources>

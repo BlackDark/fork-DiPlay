@@ -1050,4 +1050,11 @@
     <string name="connection_help_hotspot_interface_not_found">연결 설정에서 저장된 핫스팟 편집을 누르고 핫스팟 인터페이스(선택 사항)를 비운 뒤 다시 시도하세요.</string>
     <string name="connection_help_car_hotspot_off">차량 설정에서 차량 핫스팟을 켠 뒤 다시 시도하세요.</string>
     <string name="last_connection_attempt">마지막 연결 시도(%1$s): %2$s</string>
+    <string name="settings_broadcast_title">브로드캐스트 작업 (실험 기능)</string>
+    <string name="settings_broadcast_description">DiPlay가 실행 중일 때 활성화된 작업을 수신하면 DiPlay를 엽니다. 다른 앱이 브로드캐스트를 위조할 수 있으므로 신뢰할 수 있는 작업만 설정하세요.</string>
+    <string name="settings_broadcast_enable">브로드캐스트 작업 사용</string>
+    <string name="settings_broadcast_add">작업 추가</string>
+    <string name="settings_broadcast_remove">%1$s 삭제</string>
+    <string name="settings_broadcast_invalid">문자, 숫자 또는 밑줄을 사용하여 점으로 구분된 작업을 입력하세요.</string>
+    <string name="settings_broadcast_duplicate">이미 추가된 작업입니다.</string>
 </resources>

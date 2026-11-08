@@ -121,6 +121,7 @@ internal enum class SettingsSection {
     BYD_ADB,
     DISPLAY_AND_PERFORMANCE,
     EXPERIMENTAL_DISPLAY,
+    CUSTOM_BROADCAST_ACTIONS,
     ADVANCED_MEDIA,
     AMBIENT_LIGHTING,
     CAR_BUTTON,
@@ -159,6 +160,7 @@ internal object SettingsInformationArchitecture {
             SettingsSection.CLUSTER_MAP,
             SettingsSection.LAUNCHER_BUBBLE,
             SettingsSection.EXPERIMENTAL_DISPLAY,
+            SettingsSection.CUSTOM_BROADCAST_ACTIONS,
             SettingsSection.ADVANCED_MEDIA,
             SettingsSection.NAVIGATION_WHEEL,
             SettingsSection.AMBIENT_LIGHTING,
@@ -549,7 +551,9 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
             initialLaunch = false
             startCarHotspotOnLaunch()
             if (setupError == null && !CarPlayBackgroundSession.hasSession() &&
-                DiPlayPreferences.autoConnect(this) && requestedPage(intent) == null && page != "setup") {
+                DiPlayPreferences.autoConnect(this) &&
+                intent.getStringExtra(CustomBroadcastActions.EXTRA_LAUNCH_TOKEN) != CustomBroadcastActions.launchToken &&
+                requestedPage(intent) == null && page != "setup") {
                 handler.post { connect(DiPlayPreferences.autoConnectWireless(this)) }
             }
         }
@@ -1941,6 +1945,44 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 SettingsLayoutPreferences.saveForceFull(this, it)
                 render()
             }
+        }
+        filteredSection(content, SettingsSection.CUSTOM_BROADCAST_ACTIONS,
+            getString(R.string.settings_broadcast_title), R.drawable.ic_dp_advanced) { card ->
+            card.addView(label(getString(R.string.settings_broadcast_description), 14, MUTED))
+            toggle(card, getString(R.string.settings_broadcast_enable), "", CustomBroadcastActions.enabled(this)) {
+                CustomBroadcastActions.setEnabled(this, it)
+            }
+            CustomBroadcastActions.actions(this).forEach { action ->
+                toggle(card, action, "", CustomBroadcastActions.actionEnabled(this, action)) {
+                    CustomBroadcastActions.setActionEnabled(this, action, it)
+                }
+                card.addView(button(getString(R.string.settings_broadcast_remove, action), false) {
+                    CustomBroadcastActions.remove(this, action)
+                    render()
+                }, matchButton(0, 60))
+            }
+            card.addView(button(getString(R.string.settings_broadcast_add), false) {
+                val input = EditText(appDialogContext()).apply {
+                    setSingleLine()
+                    inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
+                    hint = "com.example.ACTION"
+                }
+                val dialog = appDialogBuilder().setTitle(R.string.settings_broadcast_add).setView(input)
+                    .setPositiveButton(R.string.save, null).setNegativeButton(R.string.cancel, null).create()
+                dialog.setOnShowListener {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                        val action = input.text.toString().trim()
+                        if (!CustomBroadcastActions.valid(action)) input.error = getString(R.string.settings_broadcast_invalid)
+                        else if (action in CustomBroadcastActions.actions(this)) input.error = getString(R.string.settings_broadcast_duplicate)
+                        else {
+                            CustomBroadcastActions.add(this, action)
+                            dialog.dismiss()
+                            render()
+                        }
+                    }
+                }
+                dialog.show()
+            }, matchButton(0, 60))
         }
         filteredSection(content, SettingsSection.EXPERIMENTAL_DISPLAY,
             getString(R.string.settings_experimental_display), R.drawable.ic_dp_display) { card ->
