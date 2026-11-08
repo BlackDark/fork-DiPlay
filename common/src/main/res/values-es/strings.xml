@@ -955,10 +955,10 @@
     <string name="settings_cluster_speedometer_album_color">Usar el color del álbum en el fondo del velocímetro</string>
     <string name="settings_cluster_speedometer_album_color_description">Iguala el color del borde del álbum con transiciones suaves. Conserva la opacidad elegida.</string>
     <string name="settings_broadcast_title">Acciones de difusión (experimental)</string>
-    <string name="settings_broadcast_description">Abre DiPlay al recibir una acción activada mientras DiPlay está en ejecución. Otras aplicaciones pueden suplantar difusiones; configura solo acciones fiables.</string>
+    <string name="settings_broadcast_description">Abre DiPlay al recibir una acción activada mientras DiPlay está en ejecución. Otras aplicaciones pueden suplantar difusiones; configura solo acciones fiables. La coincidencia es exacta y distingue mayúsculas.</string>
     <string name="settings_broadcast_enable">Activar acciones de difusión</string>
     <string name="settings_broadcast_add">Añadir acción</string>
     <string name="settings_broadcast_remove">Eliminar %1$s</string>
-    <string name="settings_broadcast_invalid">Introduce una acción con puntos, letras, números o guiones bajos.</string>
+    <string name="settings_broadcast_invalid">Introduce una acción de hasta 1024 caracteres sin caracteres de control. La coincidencia es exacta y distingue mayúsculas.</string>
     <string name="settings_broadcast_duplicate">Esta acción ya está añadida.</string>
 </resources>

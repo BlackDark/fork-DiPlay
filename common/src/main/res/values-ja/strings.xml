@@ -1057,10 +1057,10 @@
     <string name="settings_cluster_speedometer_album_color">速度計の背景にアルバムの色を使用</string>
     <string name="settings_cluster_speedometer_album_color_description">アルバムの枠の色に滑らかに切り替わります。選択した不透明度は維持されます。</string>
     <string name="settings_broadcast_title">ブロードキャストアクション（実験的機能）</string>
-    <string name="settings_broadcast_description">DiPlay の実行中に有効なアクションを受信すると DiPlay を開きます。他のアプリがブロードキャストを偽装できるため、信頼できるアクションのみを設定してください。</string>
+    <string name="settings_broadcast_description">DiPlay の実行中に有効なアクションを受信すると DiPlay を開きます。他のアプリがブロードキャストを偽装できるため、信頼できるアクションのみを設定してください。 大文字と小文字を区別して完全一致します。</string>
     <string name="settings_broadcast_enable">ブロードキャストアクションを有効化</string>
     <string name="settings_broadcast_add">アクションを追加</string>
     <string name="settings_broadcast_remove">%1$s を削除</string>
-    <string name="settings_broadcast_invalid">英数字またはアンダースコアを使い、ドットで区切ったアクションを入力してください。</string>
+    <string name="settings_broadcast_invalid">制御文字を含まない 1024 文字以内のアクションを入力してください。大文字と小文字を区別して完全一致します。</string>
     <string name="settings_broadcast_duplicate">このアクションは追加済みです。</string>
 </resources>

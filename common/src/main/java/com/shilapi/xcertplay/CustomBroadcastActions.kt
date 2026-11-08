@@ -23,7 +23,7 @@ internal object CustomBroadcastActions {
     fun actions(context: Context) = prefs(context).getStringSet(ACTIONS, emptySet())!!.sorted()
     fun actionEnabled(context: Context, action: String) = action !in disabled(context)
     private fun disabled(context: Context) = prefs(context).getStringSet(DISABLED, emptySet())!!.toSet()
-    fun valid(action: String) = action.length <= 255 && action.matches(Regex("[A-Za-z0-9_]+(\\.[A-Za-z0-9_]+)+"))
+    fun valid(action: String) = action.isNotEmpty() && action.length <= 1024 && action.none { it.isISOControl() }
 
     fun setEnabled(context: Context, value: Boolean) {
         prefs(context).edit().putBoolean(ENABLED, value).apply()

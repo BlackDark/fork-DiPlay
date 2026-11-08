@@ -1058,10 +1058,10 @@
     <string name="settings_cluster_speedometer_album_color">Use album color for speedometer background</string>
     <string name="settings_cluster_speedometer_album_color_description">Match the album frame color with smooth transitions. Keeps the selected opacity.</string>
     <string name="settings_broadcast_title">Broadcast actions (experimental)</string>
-    <string name="settings_broadcast_description">Open DiPlay when an enabled action is received while DiPlay is running. Other apps may spoof broadcasts; configure only trusted action strings.</string>
+    <string name="settings_broadcast_description">Open DiPlay when an enabled action is received while DiPlay is running. Other apps may spoof broadcasts; configure only trusted action strings. Matching is exact and case-sensitive.</string>
     <string name="settings_broadcast_enable">Enable broadcast actions</string>
     <string name="settings_broadcast_add">Add action</string>
     <string name="settings_broadcast_remove">Remove %1$s</string>
-    <string name="settings_broadcast_invalid">Enter a dot-separated action using letters, numbers, or underscores.</string>
+    <string name="settings_broadcast_invalid">Enter an action of up to 1024 characters without control characters. Matching is exact and case-sensitive.</string>
     <string name="settings_broadcast_duplicate">This action is already added.</string>
 </resources>

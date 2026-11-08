@@ -1015,10 +1015,10 @@
     <string name="settings_cluster_speedometer_album_color">速度表背景使用专辑颜色</string>
     <string name="settings_cluster_speedometer_album_color_description">平滑过渡到专辑边框的颜色，并保留所选的不透明度。</string>
     <string name="settings_broadcast_title">广播操作（实验性）</string>
-    <string name="settings_broadcast_description">DiPlay 运行时收到已启用的操作会打开 DiPlay。其他应用可能伪造广播；请仅配置可信的操作字符串。</string>
+    <string name="settings_broadcast_description">DiPlay 运行时收到已启用的操作会打开 DiPlay。其他应用可能伪造广播；请仅配置可信的操作字符串。 匹配区分大小写，且必须完全一致。</string>
     <string name="settings_broadcast_enable">启用广播操作</string>
     <string name="settings_broadcast_add">添加操作</string>
     <string name="settings_broadcast_remove">移除 %1$s</string>
-    <string name="settings_broadcast_invalid">请输入由点分隔、仅含字母、数字或下划线的操作。</string>
+    <string name="settings_broadcast_invalid">请输入不含控制字符且不超过 1024 个字符的操作。匹配区分大小写，且必须完全一致。</string>
     <string name="settings_broadcast_duplicate">此操作已添加。</string>
 </resources>

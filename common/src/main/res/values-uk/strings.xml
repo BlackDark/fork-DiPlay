@@ -967,10 +967,10 @@
     <string name="settings_cluster_speedometer_album_color">Колір альбому для тла спідометра</string>
     <string name="settings_cluster_speedometer_album_color_description">Плавно змінює тло на колір рамки альбому. Зберігає вибрану непрозорість.</string>
     <string name="settings_broadcast_title">Широкомовні дії (експериментально)</string>
-    <string name="settings_broadcast_description">Відкриває DiPlay після отримання ввімкненої дії, поки програма працює. Інші програми можуть підробляти повідомлення; додавайте лише довірені дії.</string>
+    <string name="settings_broadcast_description">Відкриває DiPlay після отримання ввімкненої дії, поки програма працює. Інші програми можуть підробляти повідомлення; додавайте лише довірені дії. Порівняння точне, з урахуванням регістру.</string>
     <string name="settings_broadcast_enable">Увімкнути дії</string>
     <string name="settings_broadcast_add">Додати дію</string>
     <string name="settings_broadcast_remove">Видалити %1$s</string>
-    <string name="settings_broadcast_invalid">Введіть дію через крапки, використовуючи літери, цифри або підкреслення.</string>
+    <string name="settings_broadcast_invalid">Введіть дію довжиною до 1024 символів без керівних символів. Порівняння точне, з урахуванням регістру.</string>
     <string name="settings_broadcast_duplicate">Цю дію вже додано.</string>
 </resources>
