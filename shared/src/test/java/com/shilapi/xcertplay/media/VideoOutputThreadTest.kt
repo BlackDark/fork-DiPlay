@@ -92,6 +92,29 @@ class VideoOutputThreadTest {
         }
     }
 
+    @Test @Config(sdk = [27]) fun debugExperimentStartsOutputThreadWithoutVendorLowLatency() {
+        val reports = CopyOnWriteArrayList<String>()
+        val rendered = CountDownLatch(1)
+        val sink = AndroidMediaSink(surface = null, debugDedicatedVideoOutputThread = true)
+        try {
+            sink.setVideoDiagnosticHandler(MAIN) { message ->
+                reports += message
+                if (message == "first frame rendered") rendered.countDown()
+            }
+            sink.setSurface(MAIN, Surface(SurfaceTexture(0)))
+            sink.onVideoConfig(MAIN, avcC)
+            sink.onVideoFrame(MAIN, idr)
+            assertTrue("a decoded frame was rendered", rendered.await(5, TimeUnit.SECONDS))
+            assertTrue(reports.toString(), reports.any { it.startsWith("decoder=") && it.endsWith(" outputThread=true") })
+            assertTrue(reports.toString(), reports.none { it.contains("vendorLowLatency=") })
+            assertNotNull(mainDecoder(sink).field<Thread?>("outputThread"))
+        } finally {
+            sink.close()
+            assertTrue(sink.awaitVideoReleased(5_000))
+        }
+        assertTrue(uncaught.toString(), uncaught.isEmpty())
+    }
+
     private fun mainDecoder(sink: AndroidMediaSink): Any =
         checkNotNull(sink.field<Map<Int, Any>>("videoDecoders")[MAIN]) { "no main decoder" }
 

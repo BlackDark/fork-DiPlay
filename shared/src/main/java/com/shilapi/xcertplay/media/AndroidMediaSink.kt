@@ -217,6 +217,8 @@ class AndroidMediaSink(
      * and hand decoded frames to the screen from a thread of their own.
      */
     private val vendorLowLatencyDecoder: Boolean = false,
+    /** Debug-only experiment, selected by the host for the main screen. */
+    private val debugDedicatedVideoOutputThread: Boolean = false,
     /** Opt-in MTK ACodec low-latency/no-reorder modes, with per-session automatic fallback. */
     private val mtkDecoderTuningEnabled: Boolean = false,
     /** Opt-in (#946): navigation prompts request duckable focus while the iPhone ducks audio. Needs [audioFocusEnabled]. */
@@ -714,7 +716,8 @@ class AndroidMediaSink(
         pacingDelayNanos = if (type == MAIN_SCREEN_TYPE && statsLabel == null) videoPacingDelayMillis * 1_000_000L else 0L,
         operatingRate = videoOperatingRate(type, statsLabel, mainVideoFrameRate),
         vendorLowLatency = vendorLowLatencyDecoder,
-        dedicatedOutputThread = vendorLowLatencyDecoder,
+        dedicatedOutputThread = vendorLowLatencyDecoder ||
+            (debugDedicatedVideoOutputThread && type == MAIN_SCREEN_TYPE && statsLabel == null),
         framesAtOnce = type == MAIN_SCREEN_TYPE && statsLabel == null && videoPacingDelayMillis > 0,
         // Keep the experimental MTK mode on the main CarPlay picture only. Mirrors and the
         // cluster have separate timing and must retain their established decoder configuration.
