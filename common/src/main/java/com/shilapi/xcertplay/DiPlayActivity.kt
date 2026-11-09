@@ -2043,13 +2043,13 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
             toggle(card, getString(R.string.smooth_video), getString(R.string.smooth_video_description),
                 AirPlayPersistence.loadSmoothVideo(this)) {
                 AirPlayPersistence.saveSmoothVideo(this, it)
-                reconnectIfRunning()
+                markReconnectNeeded()
             }
             toggle(card, getString(R.string.settings_direct_video_output),
                 getString(R.string.settings_direct_video_output_description),
                 AirPlayPersistence.loadDirectVideoOutput(this)) {
                 AirPlayPersistence.saveDirectVideoOutput(this, it)
-                reconnectIfRunning()
+                markReconnectNeeded()
             }
             toggle(card, getString(R.string.settings_low_latency_decoder),
                 getString(R.string.settings_low_latency_decoder_description),
@@ -2094,22 +2094,23 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
             toggle(card, getString(R.string.main_buffered_audio), getString(R.string.main_buffered_audio_description),
                 AirPlayPersistence.loadMainBufferedAudio(this)) {
                 AirPlayPersistence.saveMainBufferedAudio(this, it)
-                reconnectIfRunning()
+                markReconnectNeeded()
             }
             toggle(card, getString(R.string.settings_speech_without_low_rates), getString(R.string.settings_speech_without_low_rates_description),
                 AirPlayPersistence.loadSpeechWithout8And16Khz(this)) {
                 AirPlayPersistence.saveSpeechWithout8And16Khz(this, it)
-                reconnectIfRunning()
+                markReconnectNeeded()
             }
             toggle(card, getString(R.string.settings_call_at_call_rate), getString(R.string.settings_call_at_call_rate_description),
                 AirPlayPersistence.loadCallAtCallRate(this)) {
                 AirPlayPersistence.saveCallAtCallRate(this, it)
                 markReconnectNeeded()
             }
-            toggle(card, getString(R.string.settings_car_bluetooth_audio), getString(R.string.settings_car_bluetooth_audio_description),
+            // Geely's input service may reconnect during CarPlay and reads this preference live.
+            // Wait for explicit consent before changing it or its key routing can diverge from the session.
+            reconnectingToggle(card, getString(R.string.settings_car_bluetooth_audio), getString(R.string.settings_car_bluetooth_audio_description),
                 AirPlayPersistence.loadCarBluetoothAudio(this)) {
                 AirPlayPersistence.saveCarBluetoothAudio(this, it)
-                reconnectIfRunning()
             }
         }
         filteredSection(content, SettingsSection.CAR_BUTTON,
@@ -2221,7 +2222,6 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
                     holds.indexOf(BydOutputSettings.oemClusterHold(this))) { index ->
                     BydOutputSettings.setOemClusterHold(this, holds[index])
                     ClusterActivityOutput.stopForSettings()
-                    markReconnectNeeded()
                 }
             }
             val clusterDisplay = ClusterMapPresentation.findDisplay(this)
@@ -2293,14 +2293,12 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
                             val themes = DiLink51ClusterLayout.Theme.entries
                             choice(card, getString(R.string.instrument_theme), themes.map { it.localizedLabel(this) }, themes.indexOf(DiLink51ClusterLayout.theme(this))) {
                                 DiLink51ClusterLayout.saveTheme(this, themes[it])
-                                markReconnectNeeded()
                             }
                             card.addView(label(getString(R.string.manual_mode_match_the_cluster_theme_here_the_map_cannot_fo), 14, MUTED))
                         }
                         val contrasts = DiLink51ClusterLayout.Contrast.entries
                         choice(card, getString(R.string.instrument_contrast), contrasts.map { it.localizedLabel(this) }, contrasts.indexOf(DiLink51ClusterLayout.contrast(this))) {
                             DiLink51ClusterLayout.saveContrast(this, contrasts[it])
-                            markReconnectNeeded()
                         }
                     } else {
                         if (fullPanelCluster) clusterSafeAreaControls(card)
@@ -2374,8 +2372,9 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
                         if (!fullPanelCluster) {
                             choice(card, getString(if (turnCard) R.string.turn_card_size else R.string.cluster_map_size),
                                 listOf(getString(R.string.cluster_size_standard), getString(R.string.cluster_size_larger), getString(R.string.cluster_size_largest), getString(R.string.cluster_size_smallest)),
-                                sizes.indexOf(AirPlayPersistence.loadClusterMapScalePercent(this)).coerceAtLeast(0)) {
+                                sizes.indexOf(AirPlayPersistence.loadClusterMapScalePercent(this)).coerceAtLeast(0), reconnects = false, deferredReconnect = true) {
                                 AirPlayPersistence.saveClusterMapScalePercent(this, sizes[it])
+                                markReconnectNeeded()
                             }
                         }
                         if (!fullPanelCluster || AirPlayPersistence.loadClusterSafeAreaRect(this) == null) {
@@ -2406,7 +2405,6 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
                             ), AirPlayPersistence.loadClusterSmallWindowMode(this)) {
                                 AirPlayPersistence.saveClusterSmallWindowMode(this, it)
                                 render()
-                                markReconnectNeeded()
                             }
                             card.addView(label(getString(R.string.cluster_small_window_marker_description), 14, MUTED).apply {
                                 setPadding(0, dp(8), 0, dp(6))
@@ -4086,12 +4084,21 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
         dialog.setOnShowListener {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 if (DiLink51ClusterMonitor.hasAccess(this)) {
-                    AirPlayPersistence.saveClusterMapEnabled(this, true)
-                    DiLink51ClusterLayout.saveAutomatic(this, true)
-                    dialog.dismiss()
-                    render()
-                    toast(getString(R.string.automatic_map_enabled_open_the_cluster_map_card_or_select))
-                    reconnectIfRunning()
+                    fun enableAutomaticCluster() {
+                        AirPlayPersistence.saveClusterMapEnabled(this, true)
+                        DiLink51ClusterLayout.saveAutomatic(this, true)
+                        dialog.dismiss()
+                        render()
+                        toast(getString(R.string.automatic_map_enabled_open_the_cluster_map_card_or_select))
+                        reconnectIfRunning()
+                    }
+                    if (CarPlayBackgroundSession.hasSession()) {
+                        appDialogBuilder().setTitle(R.string.automatic_cluster_map_setup)
+                            .setMessage(R.string.shows_the_iphone_s_cluster_map_on_the_instrument_cluster_c)
+                            .setPositiveButton(R.string.apply_and_reconnect) { _, _ -> enableAutomaticCluster() }
+                            .setNegativeButton(R.string.cancel, null)
+                            .show()
+                    } else enableAutomaticCluster()
                 } else {
                     status.text = getString(R.string.still_waiting_for_usage_access_check_that_the_command_ran)
                 }
@@ -6588,12 +6595,22 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
 
     // [announcesReconnect] labels a choice whose [save] reconnects by itself.
     private fun choice(parent: LinearLayout, title: String, options: List<String>, current: Int, reconnects: Boolean = true,
-        announcesReconnect: Boolean = reconnects, enabled: Boolean = true, save: (Int) -> Unit) {
+        announcesReconnect: Boolean = reconnects, enabled: Boolean = true, deferredReconnect: Boolean = false, save: (Int) -> Unit) {
         var selection = current
         val button = button("$title · ${options[selection]}", false) {}.apply { isEnabled = enabled }
         button.setOnClickListener {
             var pendingSelection = selection
-            appDialogBuilder().setTitle(title)
+            appDialogBuilder().apply {
+                if (deferredReconnect) {
+                    setCustomTitle(column().apply {
+                        setPadding(dp(SETTINGS_CONTROL_INSET_DP), dp(SETTINGS_CONTROL_INSET_DP),
+                            dp(SETTINGS_CONTROL_INSET_DP), 0)
+                        addView(label(title, 20, TEXT, true))
+                        addView(label(getString(R.string.settings_applies_next_connection), 14, MUTED),
+                            LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(SETTINGS_HEADER_COMPACT_GAP_DP) })
+                    })
+                } else setTitle(title)
+            }
                 .setSingleChoiceItems(options.toTypedArray(), selection) { _, index -> pendingSelection = index }
                 .setPositiveButton(getString(if (announcesReconnect && CarPlayBackgroundSession.hasSession()) R.string.apply_and_reconnect else R.string.save)) { _, _ ->
                     if (pendingSelection != selection) {

@@ -922,6 +922,78 @@ class AdaptiveSettingsUiTest {
     }
 
     @Test
+    @Config(sdk = [28, 33])
+    fun advancedMediaChangesWaitForReconnectConsent() {
+        val settings = listOf(
+            R.string.smooth_video to { AirPlayPersistence.loadSmoothVideo(context) },
+            R.string.settings_direct_video_output to { AirPlayPersistence.loadDirectVideoOutput(context) },
+            R.string.main_buffered_audio to { AirPlayPersistence.loadMainBufferedAudio(context) },
+            R.string.settings_speech_without_low_rates to { AirPlayPersistence.loadSpeechWithout8And16Khz(context) },
+        )
+        val original = settings.map { it.second() }
+        val screen = openSettings()
+        val session = mock(CarPlayController::class.java)
+        var stops = 0
+        CarPlayBackgroundSession.store(session, mock(AndroidMediaSink::class.java), 800, 480, Any(),
+            CarPlaySessionDisplay(800, 480, Surface.ROTATION_0, false, false, 800, 480)) { stops++ }
+        CarPlayBackgroundSession.active = true
+        try {
+            ReflectionHelpers.setField(screen, "settingsCategory", SettingsCategory.ADVANCED)
+            settings.forEach { (title, load) ->
+                PendingReconnect.clear()
+                ReflectionHelpers.callInstanceMethod<Unit>(screen, "render")
+                val setting = descendants(screen.window.decorView).filterIsInstance<Switch>()
+                    .single { it.contentDescription == screen.getString(title) }
+                val previous = load()
+                setting.performClick()
+                assertEquals(!previous, load())
+                assertTrue(PendingReconnect.isPending(session))
+                assertEquals(View.VISIBLE, ReflectionHelpers.getField<View>(screen, "reconnectBar").visibility)
+                assertSame(session, CarPlayBackgroundSession.snapshot()?.controller)
+                assertEquals(0, stops)
+                assertNull(shadowOf(screen).nextStartedActivity)
+            }
+        } finally {
+            AirPlayPersistence.saveSmoothVideo(context, original[0])
+            AirPlayPersistence.saveDirectVideoOutput(context, original[1])
+            AirPlayPersistence.saveMainBufferedAudio(context, original[2])
+            AirPlayPersistence.saveSpeechWithout8And16Khz(context, original[3])
+            CarPlayBackgroundSession.clear()
+            PendingReconnect.clear()
+        }
+    }
+
+    @Test
+    @Config(sdk = [28, 33])
+    fun bluetoothAudioWaitsForExplicitReconnectConsent() {
+        val before = AirPlayPersistence.loadCarBluetoothAudio(context)
+        val screen = openSettings()
+        val session = mock(CarPlayController::class.java)
+        var stops = 0
+        CarPlayBackgroundSession.store(session, mock(AndroidMediaSink::class.java), 800, 480, Any(),
+            CarPlaySessionDisplay(800, 480, Surface.ROTATION_0, false, false, 800, 480)) { stops++ }
+        CarPlayBackgroundSession.active = true
+        try {
+            ReflectionHelpers.setField(screen, "settingsCategory", SettingsCategory.ADVANCED)
+            ReflectionHelpers.callInstanceMethod<Unit>(screen, "render")
+            descendants(screen.window.decorView).filterIsInstance<Switch>()
+                .single { it.contentDescription == screen.getString(R.string.settings_car_bluetooth_audio) }
+                .performClick()
+            val dialog = ShadowAlertDialog.getLatestAlertDialog()
+            assertEquals(screen.getString(R.string.apply_and_reconnect), dialog.getButton(AlertDialog.BUTTON_POSITIVE).text)
+            assertEquals(before, AirPlayPersistence.loadCarBluetoothAudio(context))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick()
+            assertEquals(before, AirPlayPersistence.loadCarBluetoothAudio(context))
+            assertSame(session, CarPlayBackgroundSession.snapshot()?.controller)
+            assertEquals(0, stops)
+        } finally {
+            AirPlayPersistence.saveCarBluetoothAudio(context, before)
+            CarPlayBackgroundSession.clear()
+            PendingReconnect.clear()
+        }
+    }
+
+    @Test
     @Config(sdk = [28])
     fun hevcColorCorrectionIsInAdvancedAndDoesNotReconnect() {
         CarPlayPicture.preferences(context).edit().clear().commit()
