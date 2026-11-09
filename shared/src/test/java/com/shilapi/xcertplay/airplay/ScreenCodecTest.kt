@@ -33,6 +33,13 @@ class ScreenCodecTest {
         assertArrayEquals(original, payload)
     }
 
+    @Test fun overflowingLengthLeavesPayloadUntouched() {
+        val payload = byteArrayOf(0x7f, 0xff.toByte(), 0xff.toByte(), 0xff.toByte(), 0x40, 0x01)
+        val original = payload.copyOf()
+        assertSame(payload, ScreenCodec.lengthPrefixedToAnnexB(payload))
+        assertArrayEquals(original, payload)
+    }
+
     @Test fun readsTheFrameTimeFromTheScreenHeader() {
         val header = ByteArray(128)
         // NTP 32.32 little-endian at byte 8: 3 s + 0x40000000/2^32 s = 3.25 s.
