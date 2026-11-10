@@ -1058,4 +1058,17 @@
     <string name="settings_cluster_speedometer_album_color">Use album color for speedometer background</string>
     <string name="settings_cluster_speedometer_album_color_description">Match the album frame color with smooth transitions. Keeps the selected opacity.</string>
     <string name="wired_teardown_pending">USB cleanup is still running. Unplug the iPhone, wait, then tap %1$s.</string>
+    <string name="settings_broadcast_title">Broadcast actions (experimental)</string>
+    <string name="settings_broadcast_description">Open DiPlay when an enabled action is received while DiPlay is running. Other apps may spoof broadcasts; configure only trusted action strings. Matching is exact and case-sensitive. For broadcasts carrying data, enter their URI scheme and/or MIME type. No-data broadcasts also match. Broadcasts with intent categories are not supported. Remove and re-add an action to change its data filter.</string>
+    <string name="settings_broadcast_enable">Enable broadcast actions</string>
+    <string name="settings_broadcast_add">Add action</string>
+    <string name="settings_broadcast_remove">Remove %1$s</string>
+    <string name="settings_broadcast_invalid">Enter an action of up to 1024 characters without control characters. Matching is exact and case-sensitive.</string>
+    <string name="settings_broadcast_duplicate">This action is already added.</string>
+    <string name="settings_broadcast_scheme">Optional URI scheme</string>
+    <string name="settings_broadcast_mime">Optional MIME type</string>
+    <string name="settings_broadcast_scheme_value">Scheme: %1$s</string>
+    <string name="settings_broadcast_mime_value">MIME type: %1$s</string>
+    <string name="settings_broadcast_invalid_scheme">Use a lowercase URI scheme (letters, digits, +, - or .).</string>
+    <string name="settings_broadcast_invalid_mime">Use a lowercase MIME type such as text/plain or */*.</string>
 </resources>

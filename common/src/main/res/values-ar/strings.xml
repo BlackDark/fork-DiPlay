@@ -1004,4 +1004,17 @@
     <string name="settings_cluster_speedometer_album_color">استخدام لون الألبوم لخلفية عداد السرعة</string>
     <string name="settings_cluster_speedometer_album_color_description">يطابق لون إطار الألبوم بانتقالات سلسة مع الحفاظ على التعتيم المحدد.</string>
     <string name="wired_teardown_pending">لا يزال تنظيف USB جارياً. افصل iPhone وانتظر، ثم اضغط على «%1$s».</string>
+    <string name="settings_broadcast_title">إجراءات البث (تجريبي)</string>
+    <string name="settings_broadcast_description">يفتح DiPlay عند تلقي إجراء مفعّل أثناء تشغيله. قد تنتحل التطبيقات الأخرى رسائل البث؛ أضف الإجراءات الموثوقة فقط. المطابقة تامة وتراعي حالة الأحرف. لرسائل البث التي تحتوي بيانات، أدخل مخطط URI أو نوع MIME أو كليهما. تتم مطابقة الرسائل دون بيانات أيضًا. لا تُدعم رسائل البث التي تحتوي فئات Intent. احذف الإجراء وأعد إضافته لتغيير مرشح البيانات.</string>
+    <string name="settings_broadcast_enable">تفعيل إجراءات البث</string>
+    <string name="settings_broadcast_add">إضافة إجراء</string>
+    <string name="settings_broadcast_remove">إزالة %1$s</string>
+    <string name="settings_broadcast_invalid">أدخل إجراءً من 1024 حرفًا كحد أقصى دون محارف تحكم. المطابقة تامة وتراعي حالة الأحرف.</string>
+    <string name="settings_broadcast_duplicate">تمت إضافة هذا الإجراء بالفعل.</string>
+    <string name="settings_broadcast_scheme">مخطط URI اختياري</string>
+    <string name="settings_broadcast_mime">نوع MIME اختياري</string>
+    <string name="settings_broadcast_scheme_value">المخطط: %1$s</string>
+    <string name="settings_broadcast_mime_value">نوع MIME: %1$s</string>
+    <string name="settings_broadcast_invalid_scheme">استخدم مخطط URI بأحرف لاتينية صغيرة وأرقام و + أو - أو .</string>
+    <string name="settings_broadcast_invalid_mime">استخدم نوع MIME بأحرف صغيرة مثل text/plain أو */*.</string>
 </resources>

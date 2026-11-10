@@ -1045,4 +1045,17 @@
     <string name="settings_cluster_speedometer_album_color">Usa il colore dell’album per lo sfondo del tachimetro</string>
     <string name="settings_cluster_speedometer_album_color_description">Abbina il colore della cornice dell’album con transizioni fluide. Mantiene l’opacità selezionata.</string>
     <string name="wired_teardown_pending">La pulizia USB è ancora in corso. Scollega l’iPhone, attendi e tocca «%1$s».</string>
+    <string name="settings_broadcast_title">Azioni broadcast (sperimentale)</string>
+    <string name="settings_broadcast_description">Apre DiPlay quando riceve un’azione attiva mentre è in esecuzione. Altre app possono falsificare i broadcast; configura solo azioni attendibili. La corrispondenza è esatta e distingue maiuscole e minuscole. Per broadcast con dati, inserisci lo schema URI e/o il tipo MIME. Corrispondono anche i broadcast senza dati. I broadcast con categorie intent non sono supportati. Rimuovi e aggiungi di nuovo l’azione per cambiare il filtro dati.</string>
+    <string name="settings_broadcast_enable">Attiva azioni broadcast</string>
+    <string name="settings_broadcast_add">Aggiungi azione</string>
+    <string name="settings_broadcast_remove">Rimuovi %1$s</string>
+    <string name="settings_broadcast_invalid">Inserisci un’azione di massimo 1024 caratteri senza caratteri di controllo. La corrispondenza è esatta e distingue maiuscole e minuscole.</string>
+    <string name="settings_broadcast_duplicate">Questa azione è già presente.</string>
+    <string name="settings_broadcast_scheme">Schema URI facoltativo</string>
+    <string name="settings_broadcast_mime">Tipo MIME facoltativo</string>
+    <string name="settings_broadcast_scheme_value">Schema: %1$s</string>
+    <string name="settings_broadcast_mime_value">Tipo MIME: %1$s</string>
+    <string name="settings_broadcast_invalid_scheme">Usa uno schema URI minuscolo con lettere, numeri, +, - o .</string>
+    <string name="settings_broadcast_invalid_mime">Usa un tipo MIME minuscolo come text/plain o */*.</string>
 </resources>

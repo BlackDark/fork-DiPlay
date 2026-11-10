@@ -1043,4 +1043,17 @@
     <string name="settings_existing_wifi_interface">Ağ arayüzü (isteğe bağlı)</string>
     <string name="settings_existing_wifi_interface_description">Yalnızca yerel ağ (LAN) bağlantısı Android\'in Wi-Fi olarak bildirmediği bir arayüzde (örneğin eth1 üzerindeki bir USB ağ kartı) çalışan üniteler içindir. Otomatik seçilmesi için boş bırakın.</string>
     <string name="wired_teardown_pending">USB temizliği hâlâ sürüyor. iPhone bağlantısını kesin, bekleyin ve “%1$s” seçeneğine dokunun.</string>
+    <string name="settings_broadcast_title">Yayın eylemleri (deneysel)</string>
+    <string name="settings_broadcast_description">DiPlay çalışırken etkin bir eylem alındığında DiPlay açılır. Diğer uygulamalar yayınları taklit edebilir; yalnızca güvenilir eylemleri yapılandırın. Eşleştirme tamdır ve büyük/küçük harfe duyarlıdır. Veri içeren yayınlar için URI şemasını ve/veya MIME türünü girin. Verisiz yayınlar da eşleşir. Intent kategorisi içeren yayınlar desteklenmez. Veri filtresini değiştirmek için eylemi kaldırıp yeniden ekleyin.</string>
+    <string name="settings_broadcast_enable">Yayın eylemlerini etkinleştir</string>
+    <string name="settings_broadcast_add">Eylem ekle</string>
+    <string name="settings_broadcast_remove">%1$s öğesini kaldır</string>
+    <string name="settings_broadcast_invalid">Kontrol karakterleri içermeyen, en fazla 1024 karakterlik bir eylem girin. Eşleştirme tamdır ve büyük/küçük harfe duyarlıdır.</string>
+    <string name="settings_broadcast_duplicate">Bu eylem zaten eklenmiş.</string>
+    <string name="settings_broadcast_scheme">İsteğe bağlı URI şeması</string>
+    <string name="settings_broadcast_mime">İsteğe bağlı MIME türü</string>
+    <string name="settings_broadcast_scheme_value">Şema: %1$s</string>
+    <string name="settings_broadcast_mime_value">MIME türü: %1$s</string>
+    <string name="settings_broadcast_invalid_scheme">Küçük harf, rakam, +, - veya . içeren bir URI şeması kullanın.</string>
+    <string name="settings_broadcast_invalid_mime">text/plain veya */* gibi küçük harfli bir MIME türü kullanın.</string>
 </resources>

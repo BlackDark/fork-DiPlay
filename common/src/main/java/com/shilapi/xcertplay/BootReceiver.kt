@@ -26,6 +26,7 @@ class BootReceiver : BroadcastReceiver() {
 class DiPlayApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        CustomBroadcastActions.refresh(this)
         ContextCompat.registerReceiver(
             this,
             VehicleWakeReceiver(),

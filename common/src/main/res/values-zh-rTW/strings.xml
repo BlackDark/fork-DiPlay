@@ -1015,4 +1015,17 @@
     <string name="settings_cluster_speedometer_album_color">速度表背景使用專輯顏色</string>
     <string name="settings_cluster_speedometer_album_color_description">平滑過渡至專輯邊框的顏色，並保留所選的不透明度。</string>
     <string name="wired_teardown_pending">USB 清理仍在進行中。請拔除 iPhone，稍候，然後點按「%1$s」。</string>
+    <string name="settings_broadcast_title">廣播動作（實驗性）</string>
+    <string name="settings_broadcast_description">DiPlay 執行時收到已啟用的動作會開啟 DiPlay。其他應用程式可能偽造廣播；請只設定可信任的動作字串。 比對區分大小寫，且必須完全相符。 對於含資料的廣播，請輸入 URI 配置和／或 MIME 類型。無資料的廣播也會符合。 不支援含 Intent 類別的廣播。要變更資料篩選條件，請移除並重新加入動作。</string>
+    <string name="settings_broadcast_enable">啟用廣播動作</string>
+    <string name="settings_broadcast_add">新增動作</string>
+    <string name="settings_broadcast_remove">移除 %1$s</string>
+    <string name="settings_broadcast_invalid">請輸入不含控制字元且不超過 1024 個字元的動作。比對區分大小寫，且必須完全相符。</string>
+    <string name="settings_broadcast_duplicate">此動作已新增。</string>
+    <string name="settings_broadcast_scheme">選填 URI 配置</string>
+    <string name="settings_broadcast_mime">選填 MIME 類型</string>
+    <string name="settings_broadcast_scheme_value">配置：%1$s</string>
+    <string name="settings_broadcast_mime_value">MIME 類型：%1$s</string>
+    <string name="settings_broadcast_invalid_scheme">請使用小寫 URI 配置，可包含字母、數字、+、- 或 .。</string>
+    <string name="settings_broadcast_invalid_mime">請使用小寫 MIME 類型，例如 text/plain 或 */*。</string>
 </resources>

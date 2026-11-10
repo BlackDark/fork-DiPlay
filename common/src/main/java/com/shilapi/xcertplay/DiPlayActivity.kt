@@ -121,6 +121,7 @@ internal enum class SettingsSection {
     BYD_ADB,
     DISPLAY_AND_PERFORMANCE,
     EXPERIMENTAL_DISPLAY,
+    CUSTOM_BROADCAST_ACTIONS,
     ADVANCED_MEDIA,
     AMBIENT_LIGHTING,
     CAR_BUTTON,
@@ -159,6 +160,7 @@ internal object SettingsInformationArchitecture {
             SettingsSection.CLUSTER_MAP,
             SettingsSection.LAUNCHER_BUBBLE,
             SettingsSection.EXPERIMENTAL_DISPLAY,
+            SettingsSection.CUSTOM_BROADCAST_ACTIONS,
             SettingsSection.ADVANCED_MEDIA,
             SettingsSection.NAVIGATION_WHEEL,
             SettingsSection.AMBIENT_LIGHTING,
@@ -549,7 +551,9 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
             initialLaunch = false
             startCarHotspotOnLaunch()
             if (setupError == null && !CarPlayBackgroundSession.hasSession() &&
-                DiPlayPreferences.autoConnect(this) && requestedPage(intent) == null && page != "setup") {
+                DiPlayPreferences.autoConnect(this) &&
+                intent.getStringExtra(CustomBroadcastActions.EXTRA_LAUNCH_TOKEN) != CustomBroadcastActions.launchToken &&
+                requestedPage(intent) == null && page != "setup") {
                 handler.post { connect(DiPlayPreferences.autoConnectWireless(this)) }
             }
         }
@@ -1941,6 +1945,29 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 SettingsLayoutPreferences.saveForceFull(this, it)
                 render()
             }
+        }
+        filteredSection(content, SettingsSection.CUSTOM_BROADCAST_ACTIONS,
+            getString(R.string.settings_broadcast_title), R.drawable.ic_dp_advanced) { card ->
+            card.addView(label(getString(R.string.settings_broadcast_description), 14, MUTED))
+            toggle(card, getString(R.string.settings_broadcast_enable), "", CustomBroadcastActions.enabled(this)) {
+                CustomBroadcastActions.setEnabled(this, it)
+            }
+            CustomBroadcastActions.actions(this).forEach { action ->
+                val dataDescription = listOf(
+                    CustomBroadcastActions.scheme(this, action).takeIf { it.isNotEmpty() }?.let { getString(R.string.settings_broadcast_scheme_value, it) },
+                    CustomBroadcastActions.mime(this, action).takeIf { it.isNotEmpty() }?.let { getString(R.string.settings_broadcast_mime_value, it) },
+                ).filterNotNull().joinToString(" · ")
+                toggle(card, action, dataDescription, CustomBroadcastActions.actionEnabled(this, action)) {
+                    CustomBroadcastActions.setActionEnabled(this, action, it)
+                }
+                card.addView(button(getString(R.string.settings_broadcast_remove, action), false) {
+                    CustomBroadcastActions.remove(this, action)
+                    render()
+                }, matchButton(0, 60))
+            }
+            card.addView(button(getString(R.string.settings_broadcast_add), false) {
+                showBroadcastActionDialog()
+            }, matchButton(0, 60))
         }
         filteredSection(content, SettingsSection.EXPERIMENTAL_DISPLAY,
             getString(R.string.settings_experimental_display), R.drawable.ic_dp_display) { card ->
@@ -6268,6 +6295,57 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
         if (settingsSectionFilter?.contains(key) == false) return
         section(parent, title, icon, build)
     }
+    private fun showBroadcastActionDialog() {
+        val input = EditText(appDialogContext()).apply {
+            setSingleLine()
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
+            hint = "com.example.ACTION"
+        }
+        val schemeInput = EditText(appDialogContext()).apply {
+            setSingleLine()
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
+            hint = "package"
+        }
+        val mimeInput = EditText(appDialogContext()).apply {
+            setSingleLine()
+            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
+            hint = "text/plain"
+        }
+        val fields = LinearLayout(appDialogContext()).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(SETTINGS_BLOCK_GAP_DP), 0, dp(SETTINGS_BLOCK_GAP_DP), 0)
+            addView(input)
+            addView(label(getString(R.string.settings_broadcast_scheme), 14, MUTED))
+            addView(schemeInput)
+            addView(label(getString(R.string.settings_broadcast_mime), 14, MUTED))
+            addView(mimeInput)
+        }
+        val title = label(getString(R.string.settings_broadcast_add), 20, TEXT).apply {
+            setPadding(dp(SETTINGS_BLOCK_GAP_DP), dp(SETTINGS_BLOCK_GAP_DP), dp(SETTINGS_BLOCK_GAP_DP), 0)
+        }
+        val scroller = ScrollView(appDialogContext()).apply { addView(fields) }
+        val dialog = appDialogBuilder().setCustomTitle(title).setView(scroller)
+            .setPositiveButton(R.string.save, null).setNegativeButton(R.string.cancel, null).create()
+        dialog.window?.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val action = input.text.toString().trim()
+                val scheme = schemeInput.text.toString().trim()
+                val mime = mimeInput.text.toString().trim()
+                if (!CustomBroadcastActions.valid(action)) input.error = getString(R.string.settings_broadcast_invalid)
+                else if (action in CustomBroadcastActions.actions(this)) input.error = getString(R.string.settings_broadcast_duplicate)
+                else if (!CustomBroadcastActions.validScheme(scheme)) schemeInput.error = getString(R.string.settings_broadcast_invalid_scheme)
+                else if (!CustomBroadcastActions.validMime(mime)) mimeInput.error = getString(R.string.settings_broadcast_invalid_mime)
+                else {
+                    CustomBroadcastActions.add(this, action, scheme, mime)
+                    dialog.dismiss()
+                    render()
+                }
+            }
+        }
+        dialog.show()
+    }
+
     // Routing changes affect the live cluster surface as soon as the host resumes.
     // Ask before saving them instead of promising to defer only part of the change.
     private fun reconnectingToggle(parent: LinearLayout, title: String, description: String,

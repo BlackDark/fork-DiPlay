@@ -1057,4 +1057,17 @@
     <string name="settings_cluster_speedometer_album_color">速度計の背景にアルバムの色を使用</string>
     <string name="settings_cluster_speedometer_album_color_description">アルバムの枠の色に滑らかに切り替わります。選択した不透明度は維持されます。</string>
     <string name="wired_teardown_pending">USBの終了処理が続いています。iPhoneを外して待ち、「%1$s」をタップしてください。</string>
+    <string name="settings_broadcast_title">ブロードキャストアクション（実験的機能）</string>
+    <string name="settings_broadcast_description">DiPlay の実行中に有効なアクションを受信すると DiPlay を開きます。他のアプリがブロードキャストを偽装できるため、信頼できるアクションのみを設定してください。 大文字と小文字を区別して完全一致します。 データを含むブロードキャストでは URI スキームと MIME タイプの一方または両方を入力します。データのないものにも一致します。 Intent カテゴリを含むブロードキャストには対応していません。データフィルタを変更するには、アクションを削除して追加し直してください。</string>
+    <string name="settings_broadcast_enable">ブロードキャストアクションを有効化</string>
+    <string name="settings_broadcast_add">アクションを追加</string>
+    <string name="settings_broadcast_remove">%1$s を削除</string>
+    <string name="settings_broadcast_invalid">制御文字を含まない 1024 文字以内のアクションを入力してください。大文字と小文字を区別して完全一致します。</string>
+    <string name="settings_broadcast_duplicate">このアクションは追加済みです。</string>
+    <string name="settings_broadcast_scheme">URI スキーム（任意）</string>
+    <string name="settings_broadcast_mime">MIME タイプ（任意）</string>
+    <string name="settings_broadcast_scheme_value">スキーム: %1$s</string>
+    <string name="settings_broadcast_mime_value">MIME タイプ: %1$s</string>
+    <string name="settings_broadcast_invalid_scheme">小文字の英数字、+、-、. を使った URI スキームを入力してください。</string>
+    <string name="settings_broadcast_invalid_mime">text/plain や */* などの小文字の MIME タイプを入力してください。</string>
 </resources>

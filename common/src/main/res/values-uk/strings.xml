@@ -967,4 +967,17 @@
     <string name="settings_cluster_speedometer_album_color">Колір альбому для тла спідометра</string>
     <string name="settings_cluster_speedometer_album_color_description">Плавно змінює тло на колір рамки альбому. Зберігає вибрану непрозорість.</string>
     <string name="wired_teardown_pending">Завершення роботи USB ще триває. Від’єднайте iPhone, зачекайте та натисніть «%1$s».</string>
+    <string name="settings_broadcast_title">Широкомовні дії (експериментально)</string>
+    <string name="settings_broadcast_description">Відкриває DiPlay після отримання ввімкненої дії, поки програма працює. Інші програми можуть підробляти повідомлення; додавайте лише довірені дії. Порівняння точне, з урахуванням регістру. Для повідомлень із даними вкажіть схему URI та/або тип MIME. Повідомлення без даних також збігаються. Повідомлення з категоріями Intent не підтримуються. Видаліть і додайте дію знову, щоб змінити фільтр даних.</string>
+    <string name="settings_broadcast_enable">Увімкнути дії</string>
+    <string name="settings_broadcast_add">Додати дію</string>
+    <string name="settings_broadcast_remove">Видалити %1$s</string>
+    <string name="settings_broadcast_invalid">Введіть дію довжиною до 1024 символів без керівних символів. Порівняння точне, з урахуванням регістру.</string>
+    <string name="settings_broadcast_duplicate">Цю дію вже додано.</string>
+    <string name="settings_broadcast_scheme">Схема URI (необов’язково)</string>
+    <string name="settings_broadcast_mime">Тип MIME (необов’язково)</string>
+    <string name="settings_broadcast_scheme_value">Схема: %1$s</string>
+    <string name="settings_broadcast_mime_value">Тип MIME: %1$s</string>
+    <string name="settings_broadcast_invalid_scheme">Використовуйте малі літери, цифри та знаки +, - або . у схемі URI.</string>
+    <string name="settings_broadcast_invalid_mime">Використовуйте малий регістр типу MIME, наприклад text/plain або */*.</string>
 </resources>

@@ -1051,4 +1051,17 @@
     <string name="connection_help_car_hotspot_off">차량 설정에서 차량 핫스팟을 켠 뒤 다시 시도하세요.</string>
     <string name="last_connection_attempt">마지막 연결 시도(%1$s): %2$s</string>
     <string name="wired_teardown_pending">USB 정리가 아직 진행 중입니다. iPhone을 분리하고 기다린 후 ‘%1$s’ 버튼을 누르세요.</string>
+    <string name="settings_broadcast_title">브로드캐스트 작업 (실험 기능)</string>
+    <string name="settings_broadcast_description">DiPlay가 실행 중일 때 활성화된 작업을 수신하면 DiPlay를 엽니다. 다른 앱이 브로드캐스트를 위조할 수 있으므로 신뢰할 수 있는 작업만 설정하세요. 대소문자를 구분하여 정확히 일치해야 합니다. 데이터가 있는 브로드캐스트는 URI 스킴 및/또는 MIME 유형을 입력하세요. 데이터가 없는 브로드캐스트도 일치합니다. Intent 카테고리가 있는 브로드캐스트는 지원하지 않습니다. 데이터 필터를 바꾸려면 작업을 삭제하고 다시 추가하세요.</string>
+    <string name="settings_broadcast_enable">브로드캐스트 작업 사용</string>
+    <string name="settings_broadcast_add">작업 추가</string>
+    <string name="settings_broadcast_remove">%1$s 삭제</string>
+    <string name="settings_broadcast_invalid">제어 문자 없이 1024자 이하의 작업을 입력하세요. 대소문자를 구분하여 정확히 일치해야 합니다.</string>
+    <string name="settings_broadcast_duplicate">이미 추가된 작업입니다.</string>
+    <string name="settings_broadcast_scheme">선택 URI 스킴</string>
+    <string name="settings_broadcast_mime">선택 MIME 유형</string>
+    <string name="settings_broadcast_scheme_value">스킴: %1$s</string>
+    <string name="settings_broadcast_mime_value">MIME 유형: %1$s</string>
+    <string name="settings_broadcast_invalid_scheme">소문자, 숫자, +, - 또는 .으로 된 URI 스킴을 사용하세요.</string>
+    <string name="settings_broadcast_invalid_mime">text/plain 또는 */*처럼 소문자 MIME 유형을 사용하세요.</string>
 </resources>
