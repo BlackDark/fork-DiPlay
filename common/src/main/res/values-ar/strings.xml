@@ -1017,4 +1017,6 @@
     <string name="settings_broadcast_mime_value">نوع MIME: %1$s</string>
     <string name="settings_broadcast_invalid_scheme">استخدم مخطط URI بأحرف لاتينية صغيرة وأرقام و + أو - أو .</string>
     <string name="settings_broadcast_invalid_mime">استخدم نوع MIME بأحرف صغيرة مثل text/plain أو */*.</string>
+    <string name="settings_hevc_color_correction">تصحيح ألوان HEVC (تجريبي)</string>
+    <string name="settings_hevc_color_correction_description">يعدل الألوان في بعض الشاشات إذا بدا فيديو HEVC ساطعًا أو مشبعًا أكثر من اللازم. يطبق فورًا عند دعمه وإيقاف إخراج الفيديو المباشر والفيديو السلس. قد لا يعمل أو قد يجعل الألوان أسوأ على بعض الأجهزة.</string>
 </resources>

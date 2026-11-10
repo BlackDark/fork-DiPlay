@@ -26,12 +26,19 @@ internal object CarPlayPicture {
     class Binding(private val view: TextureView) : java.io.Closeable {
         private var closed = false
         private val prefs = preferences(view.context)
-        private val update: () -> Unit = { if (!closed) apply(view, prefs) }
+        private var correctHevc = false
+        private val update: () -> Unit = {
+            if (!closed) apply(view, prefs, correctHevc && DebugHevcColorExperiment.enabled(view.context))
+        }
         private val handler = android.os.Handler(android.os.Looper.getMainLooper())
         private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ -> handler.post { update() } }
         init {
             prefs.registerOnSharedPreferenceChangeListener(listener)
             previewListeners.add(update)
+            update()
+        }
+        fun setHevcCorrection(enabled: Boolean) {
+            correctHevc = enabled
             update()
         }
         override fun close() {
@@ -77,11 +84,15 @@ internal object CarPlayPicture {
         }
     }
 
-    fun apply(view: TextureView, prefs: SharedPreferences) {
-        val neutral = originalPreview || keys
+    fun combinedMatrix(prefs: SharedPreferences, correctHevc: Boolean): ColorMatrix =
+        matrix(prefs).apply { if (correctHevc) preConcat(DebugHevcColorExperiment.correction()) }
+
+    fun apply(view: TextureView, prefs: SharedPreferences, correctHevc: Boolean = false) {
+        val neutral = originalPreview || (!correctHevc && keys
             .all { value(prefs, it) == defaultValue(it) }
+        )
         view.setLayerPaint(if (neutral) null else Paint().apply {
-            colorFilter = ColorMatrixColorFilter(matrix(prefs))
+            colorFilter = ColorMatrixColorFilter(combinedMatrix(prefs, correctHevc))
         })
     }
 }

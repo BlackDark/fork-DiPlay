@@ -1028,4 +1028,6 @@
     <string name="settings_broadcast_mime_value">MIME 类型：%1$s</string>
     <string name="settings_broadcast_invalid_scheme">请使用小写 URI 方案，可包含字母、数字、+、- 或 .。</string>
     <string name="settings_broadcast_invalid_mime">请使用小写 MIME 类型，例如 text/plain 或 */*。</string>
+    <string name="settings_hevc_color_correction">HEVC 色彩校正（实验性）</string>
+    <string name="settings_hevc_color_correction_description">当部分车机上的 HEVC 视频过亮或过饱和时调整颜色。在设备支持且直接视频输出和流畅视频关闭时立即生效。某些设备可能不支持此功能或使颜色变差。</string>
 </resources>

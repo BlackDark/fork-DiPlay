@@ -968,4 +968,6 @@
     <string name="settings_broadcast_mime_value">Tipo MIME: %1$s</string>
     <string name="settings_broadcast_invalid_scheme">Usa un esquema URI en minúsculas con letras, números, +, - o .</string>
     <string name="settings_broadcast_invalid_mime">Usa un tipo MIME en minúsculas, como text/plain o */*.</string>
+    <string name="settings_hevc_color_correction">Corrección de color HEVC (experimental)</string>
+    <string name="settings_hevc_color_correction_description">Ajusta los colores en algunas pantallas si el vídeo HEVC se ve demasiado brillante o saturado. Se aplica de inmediato cuando es compatible y Salida de vídeo directa y Vídeo fluido están desactivados. Puede no funcionar o empeorar los colores en algunos dispositivos.</string>
 </resources>

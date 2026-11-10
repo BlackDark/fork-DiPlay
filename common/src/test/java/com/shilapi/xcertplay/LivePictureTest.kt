@@ -61,6 +61,27 @@ class LivePictureTest {
             mainBinding.close(); clusterBinding.close(); CarPlayPicture.showOriginal(false)
         }
     }
+    @Test fun hevcCorrectionChoiceUpdatesLiveAndDoesNotAffectOtherStreams() {
+        val main = RecordingTexture()
+        val other = RecordingTexture()
+        val mainBinding = CarPlayPicture.Binding(main)
+        val otherBinding = CarPlayPicture.Binding(other)
+        try {
+            mainBinding.setHevcCorrection(true)
+            assertNull(main.applied)
+            DebugHevcColorExperiment.setEnabled(context, true)
+            shadowOf(Looper.getMainLooper()).idle()
+            assertNotNull(main.applied?.colorFilter)
+            assertNull(other.applied)
+            mainBinding.setHevcCorrection(false)
+            assertNull(main.applied)
+            mainBinding.setHevcCorrection(true)
+            assertNotNull(main.applied?.colorFilter)
+            DebugHevcColorExperiment.setEnabled(context, false)
+            shadowOf(Looper.getMainLooper()).idle()
+            assertNull(main.applied)
+        } finally { mainBinding.close(); otherBinding.close() }
+    }
     @Test fun panelSliderSavesImmediatelyAndResetClearsOriginalComparison() {
         val panel = CarPlayPicturePanel(context) {}
         fun descendants(view: View): List<View> = listOf(view) +

@@ -1071,4 +1071,6 @@
     <string name="settings_broadcast_mime_value">MIME type: %1$s</string>
     <string name="settings_broadcast_invalid_scheme">Use a lowercase URI scheme (letters, digits, +, - or .).</string>
     <string name="settings_broadcast_invalid_mime">Use a lowercase MIME type such as text/plain or */*.</string>
+    <string name="settings_hevc_color_correction">HEVC color correction (experimental)</string>
+    <string name="settings_hevc_color_correction_description">Adjust colors on some head units when HEVC video looks too bright or saturated. Applies immediately when supported, with Direct video output and Smooth video off. May not work on some devices and may worsen colors.</string>
 </resources>

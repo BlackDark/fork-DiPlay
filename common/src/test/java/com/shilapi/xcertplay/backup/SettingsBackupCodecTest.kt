@@ -3,6 +3,7 @@ package com.shilapi.xcertplay.backup
 import android.content.Context
 import com.shilapi.xcertplay.AirPlayPersistence
 import com.shilapi.xcertplay.CarPlayPicture
+import com.shilapi.xcertplay.DebugHevcColorExperiment
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -20,6 +21,22 @@ class SettingsBackupCodecTest {
     private val context: Context get() = RuntimeEnvironment.getApplication()
 
     private fun prefs(name: String) = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+
+    @Test
+    fun hevcColorChoiceRoundTripsAndRejectsWrongType() {
+        val picture = prefs("carplay_picture")
+        picture.edit().clear().commit()
+        try {
+            DebugHevcColorExperiment.setEnabled(context, true)
+            val backup = SettingsBackupCodec.export(context, "0.2.22")
+            picture.edit().clear().commit()
+            assertFalse(SettingsBackupCodec.import(context, backup).invalid)
+            assertTrue(DebugHevcColorExperiment.enabled(context))
+            picture.edit().clear().commit()
+            SettingsBackupCodec.import(context, """{"format":"diplay-settings","version":1,"settings":{"carplay_picture":{"hevc_color_correction":"yes"}}}""".toByteArray())
+            assertFalse(picture.contains(DebugHevcColorExperiment.PREFERENCE))
+        } finally { picture.edit().clear().commit() }
+    }
 
     @Test
     fun navigationPromptAudioFocusTravelsWithTheAudioFocusSettings() {

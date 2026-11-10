@@ -1056,4 +1056,6 @@
     <string name="settings_broadcast_mime_value">MIME türü: %1$s</string>
     <string name="settings_broadcast_invalid_scheme">Küçük harf, rakam, +, - veya . içeren bir URI şeması kullanın.</string>
     <string name="settings_broadcast_invalid_mime">text/plain veya */* gibi küçük harfli bir MIME türü kullanın.</string>
+    <string name="settings_hevc_color_correction">HEVC renk düzeltmesi (deneysel)</string>
+    <string name="settings_hevc_color_correction_description">Bazı araç ünitelerinde HEVC video çok parlak veya doygun görünüyorsa renkleri ayarlar. Destekleniyorsa ve doğrudan video çıkışı ile akıcı video kapalıysa hemen uygulanır. Bazı cihazlarda çalışmayabilir veya renkleri kötüleştirebilir.</string>
 </resources>

@@ -286,6 +286,7 @@ class AndroidMediaSink(
     private var callSpeaker: CallSpeaker? = null // guarded by audioModeLock
     private var earpieceFallbackTried = false // guarded by audioModeLock
     private val pendingVideoCodec = ConcurrentHashMap<Int, VideoCodec>()
+    private var mainVideoCodecChanged: ((VideoCodec?) -> Unit)? = null
     private val videoRecoveryHandlers = ConcurrentHashMap<Int, () -> Unit>()
     private val videoDiagnosticHandlers = ConcurrentHashMap<Int, (String) -> Unit>()
     private val recoveryPending = AtomicBoolean(false)
@@ -479,7 +480,25 @@ class AndroidMediaSink(
 
     override fun onVideoCodec(type: Int, codec: VideoCodec) {
         synchronized(videoOwnershipLock) {
-            if (!videoClosed) pendingVideoCodec[type] = codec
+            if (!videoClosed) {
+                pendingVideoCodec[type] = codec
+                if (type == MAIN_SCREEN_TYPE) mainVideoCodecChanged?.invoke(codec)
+            }
+        }
+    }
+
+    /** Listener is called on the media thread; a newly attached host receives the current codec. */
+    fun setMainVideoCodecChangedListener(listener: ((VideoCodec?) -> Unit)?) {
+        synchronized(videoOwnershipLock) {
+            mainVideoCodecChanged = listener
+            listener?.invoke(if (videoClosed) null else pendingVideoCodec[MAIN_SCREEN_TYPE])
+        }
+    }
+
+    /** An old Activity must not detach the listener installed by a newer host. */
+    fun clearMainVideoCodecChangedListener(listener: (VideoCodec?) -> Unit) {
+        synchronized(videoOwnershipLock) {
+            if (mainVideoCodecChanged === listener) mainVideoCodecChanged = null
         }
     }
 
@@ -523,6 +542,7 @@ class AndroidMediaSink(
                 }
                 lastVideoConfig.remove(type)
                 pendingVideoCodec.remove(type)
+                if (type == MAIN_SCREEN_TYPE) mainVideoCodecChanged?.invoke(null)
             }
         }
         synchronized(screenStateLock) {
@@ -660,6 +680,7 @@ class AndroidMediaSink(
         AmbientMusicController.closeSink(ambientSinkToken)
         synchronized(videoOwnershipLock) {
             videoClosed = true
+            mainVideoCodecChanged = null
             videoDecoders.entries.toList().forEach { (type, decoder) -> retire(type, decoder) }
             synchronized(mirrorLock) {
                 mirrorDecoders.values.forEach(VideoDecoder::close)

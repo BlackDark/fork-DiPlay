@@ -3,6 +3,7 @@ package com.shilapi.xcertplay.backup
 import android.content.Context
 import android.content.SharedPreferences.Editor
 import com.shilapi.xcertplay.CarPlayPicture
+import com.shilapi.xcertplay.DebugHevcColorExperiment
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -65,7 +66,8 @@ object SettingsBackupCodec {
         "diplay" to Policy.Allow(DIPLAY_KEYS),
         // These readers call getInt and getBoolean, which throw on any other stored type. A key that is not stored yet
         // has no type to compare with, so the type is declared here.
-        "carplay_picture" to Policy.Allow(PICTURE_KEYS, types = PICTURE_KEYS.associateWith { KeyType.INT }),
+        "carplay_picture" to Policy.Allow(PICTURE_KEYS + DebugHevcColorExperiment.PREFERENCE,
+            types = PICTURE_KEYS.associateWith { KeyType.INT } + (DebugHevcColorExperiment.PREFERENCE to KeyType.BOOLEAN)),
         "diplay_car_hotspot" to Policy.Allow(CAR_HOTSPOT_KEYS, types = CAR_HOTSPOT_KEYS.associateWith { KeyType.BOOLEAN }),
     )
 

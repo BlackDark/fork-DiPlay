@@ -411,6 +411,8 @@ open class CarPlayHostActivity : ComponentActivity() {
     internal var sinkReleaseWaitMillis = SINK_RELEASE_WAIT_MILLIS
     private var videoSurfaceProbe: ViewTreeObserver.OnPreDrawListener? = null
     private var pictureBinding: CarPlayPicture.Binding? = null
+    private var debugColorListenerSink: AndroidMediaSink? = null
+    private var debugColorListener: ((com.shilapi.xcertplay.airplay.VideoCodec?) -> Unit)? = null
     private var picturePanel: View? = null
     private var picturePanelGeneration = 0
     private var gestureOverlay: View? = null
@@ -1975,6 +1977,7 @@ open class CarPlayHostActivity : ComponentActivity() {
         updateCallPopupGuard()
         AppAppearanceRuntime.clearHost(this)
         nightModeController.pause()
+        detachDebugColorExperiment()
         pictureBinding?.close()
         pictureBinding = null
         removeVideoSurfaceProbe()
@@ -5336,6 +5339,29 @@ open class CarPlayHostActivity : ComponentActivity() {
         )
     }
 
+    private fun attachDebugColorExperiment(renderer: AndroidMediaSink) {
+        detachDebugColorExperiment()
+        lateinit var listener: (com.shilapi.xcertplay.airplay.VideoCodec?) -> Unit
+        listener = { codec ->
+            runOnUiThread {
+                if (!isDestroyed && sink === renderer && debugColorListener === listener) {
+                    pictureBinding?.setHevcCorrection(codec == com.shilapi.xcertplay.airplay.VideoCodec.H265)
+                }
+            }
+        }
+        debugColorListenerSink = renderer
+        debugColorListener = listener
+        renderer.setMainVideoCodecChangedListener(listener)
+    }
+
+    private fun detachDebugColorExperiment() {
+        val listener = debugColorListener
+        if (listener != null) debugColorListenerSink?.clearMainVideoCodecChangedListener(listener)
+        debugColorListener = null
+        debugColorListenerSink = null
+        pictureBinding?.setHevcCorrection(false)
+    }
+
     private fun createMediaEngine(sink: AndroidMediaSink): CarPlayMediaEngine =
         CarPlayMediaEngine(
             sink = sink,
@@ -5544,6 +5570,7 @@ open class CarPlayHostActivity : ComponentActivity() {
         controller = snapshot.controller
         updateClusterMapShown()
         sink = snapshot.sink
+        attachDebugColorExperiment(snapshot.sink)
         sessionDisplay = snapshot.display
         // The hotspot came up under the host that started this session; the menu keeps naming it.
         CarPlayBackgroundSession.hotspotReady?.let {
@@ -5686,6 +5713,7 @@ open class CarPlayHostActivity : ComponentActivity() {
             controllerGeneration = controllerGeneration,
         )
         sink = renderer
+        attachDebugColorExperiment(renderer)
         currentSurface?.let(::attachSurface)
         MapMirrors.reapply()
         val media = createMediaEngine(renderer)

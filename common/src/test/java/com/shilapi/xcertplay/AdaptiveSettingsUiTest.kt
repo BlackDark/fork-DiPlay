@@ -923,6 +923,35 @@ class AdaptiveSettingsUiTest {
 
     @Test
     @Config(sdk = [28])
+    fun hevcColorCorrectionIsInAdvancedAndDoesNotReconnect() {
+        CarPlayPicture.preferences(context).edit().clear().commit()
+        val screen = openSettings()
+        ReflectionHelpers.setField(screen, "settingsCategory", SettingsCategory.ADVANCED)
+        ReflectionHelpers.callInstanceMethod<Unit>(screen, "render")
+        val session = mock(CarPlayController::class.java)
+        CarPlayBackgroundSession.store(session, mock(AndroidMediaSink::class.java), 800, 480, Any(),
+            CarPlaySessionDisplay(800, 480, Surface.ROTATION_0, false, false, 800, 480)) {}
+        CarPlayBackgroundSession.active = true
+        try {
+            PendingReconnect.clear()
+            val setting = descendants(screen.window.decorView).filterIsInstance<Switch>()
+                .single { it.contentDescription == screen.getString(R.string.settings_hevc_color_correction) }
+            assertFalse(setting.isChecked)
+            setting.performClick()
+            assertTrue(DebugHevcColorExperiment.enabled(context))
+            assertFalse(PendingReconnect.isPending(session))
+            assertSame(session, CarPlayBackgroundSession.snapshot()?.controller)
+            setting.performClick()
+            assertFalse(DebugHevcColorExperiment.enabled(context))
+        } finally {
+            CarPlayPicture.preferences(context).edit().clear().commit()
+            CarPlayBackgroundSession.clear()
+            PendingReconnect.clear()
+        }
+    }
+
+    @Test
+    @Config(sdk = [28])
     fun mtkDecoderTuningAppearsOnlyForMtkAndMarksReconnect() {
         AirPlayPersistence.saveMtkDecoderTuning(context, false)
         val screen = openSettings()

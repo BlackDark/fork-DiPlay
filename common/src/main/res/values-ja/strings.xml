@@ -1070,4 +1070,6 @@
     <string name="settings_broadcast_mime_value">MIME タイプ: %1$s</string>
     <string name="settings_broadcast_invalid_scheme">小文字の英数字、+、-、. を使った URI スキームを入力してください。</string>
     <string name="settings_broadcast_invalid_mime">text/plain や */* などの小文字の MIME タイプを入力してください。</string>
+    <string name="settings_hevc_color_correction">HEVCの色補正（実験的機能）</string>
+    <string name="settings_hevc_color_correction_description">HEVC映像が明るすぎる、または鮮やかすぎる一部の車載端末で色を調整します。対応端末で映像の直接出力と映像を滑らかにする設定がオフのときに直ちに適用されます。端末によっては機能しない、または色が悪くなる場合があります。</string>
 </resources>

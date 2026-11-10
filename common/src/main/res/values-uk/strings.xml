@@ -980,4 +980,6 @@
     <string name="settings_broadcast_mime_value">Тип MIME: %1$s</string>
     <string name="settings_broadcast_invalid_scheme">Використовуйте малі літери, цифри та знаки +, - або . у схемі URI.</string>
     <string name="settings_broadcast_invalid_mime">Використовуйте малий регістр типу MIME, наприклад text/plain або */*.</string>
+    <string name="settings_hevc_color_correction">Корекція кольору HEVC (експериментально)</string>
+    <string name="settings_hevc_color_correction_description">Коригує кольори на деяких пристроях, якщо відео HEVC виглядає надто яскравим або насиченим. Застосовується одразу за підтримки пристрою та вимкнених прямого виводу й плавного відео. На деяких пристроях може не працювати або погіршити кольори.</string>
 </resources>

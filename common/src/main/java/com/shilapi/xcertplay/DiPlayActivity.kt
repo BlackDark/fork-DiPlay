@@ -2023,6 +2023,11 @@ class DiPlayActivity : ComponentActivity(), AppAppearanceOwner {
                 markReconnectNeeded()
                 render()
             }
+            toggle(card, getString(R.string.settings_hevc_color_correction),
+                getString(R.string.settings_hevc_color_correction_description),
+                DebugHevcColorExperiment.enabled(this)) {
+                DebugHevcColorExperiment.setEnabled(this, it)
+            }
             val hevc = AirPlayPersistence.loadHevcEnabled(this)
             val selectedMime = if (hevc) MediaFormat.MIMETYPE_VIDEO_HEVC else MediaFormat.MIMETYPE_VIDEO_AVC
             val mtkDecoder = if (hevc && AirPlayPersistence.loadHevcSoftwareDecoderEnabled(this)) null

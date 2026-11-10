@@ -968,4 +968,6 @@
     <string name="settings_broadcast_mime_value">Тип MIME: %1$s</string>
     <string name="settings_broadcast_invalid_scheme">Используйте строчные буквы, цифры и знаки +, - или . в схеме URI.</string>
     <string name="settings_broadcast_invalid_mime">Используйте строчный тип MIME, например text/plain или */*.</string>
+    <string name="settings_hevc_color_correction">Коррекция цвета HEVC (экспериментально)</string>
+    <string name="settings_hevc_color_correction_description">Корректирует цвета на некоторых устройствах, если видео HEVC выглядит слишком ярким или насыщенным. Применяется сразу при поддержке устройства и выключенных прямом выводе и плавном видео. На некоторых устройствах может не работать или ухудшать цвета.</string>
 </resources>
